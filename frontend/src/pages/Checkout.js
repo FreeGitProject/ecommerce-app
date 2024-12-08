@@ -8,6 +8,14 @@ const Checkout = () => {
   // Handle order placement
   const handleOrder = async () => {
     try {
+      //update Qty server side Json data
+      for (let item of cart) {
+        await axios.post('http://localhost:5000/api/products/update-quantity', {
+          productId: item.id,
+          size: item.selectedSize,
+          quantity: item.quantity,
+        });
+      }
       // Calculate the total price of the order
       const total = cart.reduce(
         (sum, item) => sum + item.price * item.quantity,
