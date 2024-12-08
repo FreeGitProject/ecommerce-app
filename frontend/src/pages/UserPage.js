@@ -29,26 +29,36 @@ const UserPage = () => {
   if (loading) return <p>Loading...</p>;
 
   return (
-    <div>
-      <h2>My Orders</h2>
+    <div className="container my-5">
+      <h2 className="text-center mb-4">My Orders</h2>
+
       {orders.length === 0 ? (
-        <p>You have no previous orders.</p>
+        <div className="alert alert-info text-center">
+          You have no previous orders.
+        </div>
       ) : (
         <div>
           {orders.map(order => (
-            <div key={order.orderId} style={{ marginBottom: '20px' }}>
-              <h3>Order #{order.orderId}</h3>
-              <p>Date: {order.date}</p>
-              <p>Status: {order.status}</p>
-              <p>Total: ${order.total}</p>
-              <h4>Items:</h4>
-              <ul>
-                {order.items.map((item, index) => (
-                  <li key={index}>
-                    Product ID: {item.productId}, Size: {item.size}, Quantity: {item.quantity}, Price: ${item.price}
-                  </li>
-                ))}
-              </ul>
+            <div key={order.orderId} className="card mb-4">
+              <div className="card-header">
+                <h3>Order #{order.orderId}</h3>
+                <p className="mb-0">Date: {order.date}</p>
+                <p className="mb-0">Status: {order.status}</p>
+                <h5 className="mt-2">Total: ${order.total}</h5>
+              </div>
+              <div className="card-body">
+                <h4 className="mb-3">Items:</h4>
+                <ul className="list-group">
+                  {order.items.map((item, index) => (
+                    <li key={index} className="list-group-item">
+                      <strong>Product ID:</strong> {item.productId} <br />
+                      <strong>Size:</strong> {item.size} <br />
+                      <strong>Quantity:</strong> {item.quantity} <br />
+                      <strong>Price:</strong> ${item.price}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           ))}
         </div>
