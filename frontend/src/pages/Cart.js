@@ -1,7 +1,9 @@
+import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 
 const Cart = () => {
   const { cart, dispatch } = useCart();
+  const navigate = useNavigate();
 
   const handleRemove = (id) => {
     dispatch({
@@ -12,6 +14,15 @@ const Cart = () => {
 
   const calculateTotal = () => {
     return cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  };
+  const handleBuyNow = () => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) {
+      alert('Please log in to continue');
+      navigate('/login');
+    } else {
+      navigate('/checkout');
+    }
   };
 
   return (
@@ -49,7 +60,7 @@ const Cart = () => {
           {/* Total and Checkout */}
           <div className="d-flex justify-content-between mt-4">
             <h4>Total: ${calculateTotal()}</h4>
-            <button className="btn btn-primary">Proceed to Checkout</button>
+            <button className="btn btn-primary" onClick={handleBuyNow}>Proceed to Checkout</button>
           </div>
         </div>
       )}
