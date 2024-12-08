@@ -15,18 +15,19 @@ const Checkout = () => {
       );
 
       // Send the order data to the server to be saved
-      const user = JSON.parse(localStorage.getItem("user")); // Assuming user info is stored in localStorage
+      const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
         alert("Please log in to place an order");
         return;
       }
-      // Assuming productDetails is an array of product objects
+
       const cartItems = cart.map((product) => ({
         productId: product.id,
         size: product.selectedSize,
         quantity: product.quantity,
         price: product.price,
       }));
+
       const orderData = {
         userId: user.id,
         cartItems: cartItems,
@@ -51,33 +52,61 @@ const Checkout = () => {
   // If the cart is empty
   if (cart.length === 0) {
     return (
-      <div>
+      <div className="container my-5">
         <h2>Checkout</h2>
         <p>Your cart is empty. Add items to proceed to checkout.</p>
       </div>
     );
   }
 
+  const total = cart.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   return (
-    <div className="checkout-container">
+    <div className="container my-5">
       <h2>Checkout</h2>
-      <div className="cart-items">
-        {cart.map((item) => (
-          <div key={item.id} className="cart-item">
-            <img src={item.image} alt={item.name} className="cart-item-image" />
-            <div className="cart-item-details">
-              <h3>{item.name}</h3>
-              <p>Size: {item.selectedSize}</p>
-              <p>Quantity: {item.quantity}</p>
-              <p>Price: ${item.price}</p>
+      <div className="row">
+        <div className="col-md-8">
+          <div className="cart-items">
+            {cart.map((item) => (
+              <div key={item.id} className="card mb-3">
+                <div className="row g-0">
+                  <div className="col-md-4">
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="img-fluid rounded-start"
+                    />
+                  </div>
+                  <div className="col-md-8">
+                    <div className="card-body">
+                      <h5 className="card-title">{item.name}</h5>
+                      <p className="card-text">Size: {item.selectedSize}</p>
+                      <p className="card-text">Quantity: {item.quantity}</p>
+                      <p className="card-text">
+                        <strong>Price:</strong> ${item.price}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="col-md-4">
+          <div className="card">
+            <div className="card-body">
+              <h5 className="card-title">Order Summary</h5>
+              <p><strong>Total:</strong> ${total}</p>
+              <button onClick={handleOrder} className="btn btn-primary w-100">
+                Place Order
+              </button>
             </div>
           </div>
-        ))}
-      </div>
-      <div className="checkout-actions">
-        <button onClick={handleOrder} className="checkout-button">
-          Place Order
-        </button>
+        </div>
       </div>
     </div>
   );

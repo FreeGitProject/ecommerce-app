@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap'; // Import Bootstrap components
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -12,19 +13,27 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Products</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <Container className="my-5">
+      <h1 className="text-center mb-4">Our Products</h1>
+      <Row>
         {products.map(product => (
-          <div key={product.id} style={{ border: '1px solid #ccc', margin: '10px', padding: '10px' }}>
-            <img src={product.image} alt={product.name} style={{ width: '100px' }} />
-            <h3>{product.name}</h3>
-            <p>Price: ${product.price}</p>
-            <Link to={`/product/${product.id}`}>View Details</Link>
-          </div>
+          <Col key={product.id} sm={12} md={6} lg={4} xl={3} className="mb-4">
+            <Card className="shadow-sm">
+              <Card.Img variant="top" src={product.image} alt={product.name} />
+              <Card.Body>
+                <Card.Title>{product.name}</Card.Title>
+                <Card.Text>
+                  <strong>Price:</strong> ${product.price}
+                </Card.Text>
+                <Link to={`/product/${product.id}`}>
+                  <Button variant="primary" className="w-100">View Details</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+          </Col>
         ))}
-      </div>
-    </div>
+      </Row>
+    </Container>
   );
 };
 
